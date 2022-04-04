@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Main_Program &mdash; ISEN A2 Project 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ISEN A2 Project
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">app</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ISEN A2 Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>Main_Program</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Main_Program</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Thu Jun 17 10:20:37 2021</span>
+
+<span class="sd">@author: matte</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###########################</span>
+<span class="c1"># IMPORTS</span>
+<span class="c1">###########################</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">folium</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">dispatch_points_and_get_area_color</span> <span class="k">as</span> <span class="nn">dispatchModule</span> 
+<span class="kn">import</span> <span class="nn">colors_on_map</span> <span class="k">as</span> <span class="nn">colorModule</span>
+
+
+<span class="c1">###########################</span>
+<span class="c1"># FUNCTIONS </span>
+<span class="c1">###########################</span>
+
+<div class="viewcode-block" id="get_area_data"><a class="viewcode-back" href="../Main_Program.html#Main_Program.get_area_data">[docs]</a><span class="k">def</span> <span class="nf">get_area_data</span><span class="p">(</span><span class="n">area_names</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the data of every area from the area folder</span>
+<span class="sd">    </span>
+<span class="sd">    :param areas_names: The list of (str) names for each area.</span>
+<span class="sd">    :type areas_names: list</span>
+<span class="sd">    :returns: A list of list of coordinates (one sublist for each area) and a list with all the data </span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">area_data_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">coordinates_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">area_names</span> <span class="p">:</span> 
+        <span class="n">area_data_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;areas/&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))))</span>  <span class="c1"># we load the area file that is a .json)</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">area_names</span><span class="p">))</span> <span class="p">:</span> <span class="c1">#We go through the list of names to use every area data separately</span>
+        <span class="n">coordinates_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">area_data_list</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;geometries&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;coordinates&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">area_data_list</span><span class="p">,</span> <span class="n">coordinates_list</span></div>
+
+<span class="c1">#-----------------------------------------------om---------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="choose_API_file"><a class="viewcode-back" href="../Main_Program.html#Main_Program.choose_API_file">[docs]</a><span class="k">def</span> <span class="nf">choose_API_file</span><span class="p">(</span><span class="n">is_online</span><span class="p">,</span> <span class="n">nb_points</span><span class="p">,</span> <span class="n">local_API_name</span><span class="p">)</span> <span class="p">:</span> 
+    <span class="sd">&quot;&quot;&quot;Choose an online or local API</span>
+<span class="sd">    </span>
+<span class="sd">    :param is_online: True or False, depends on the choice of the user on the web page.</span>
+<span class="sd">    :type is_online: bool</span>
+<span class="sd">    :param nb_points: Integer, depends on the choice of the user on the web page.</span>
+<span class="sd">    :type nb_points: int</span>
+<span class="sd">    :param local_API_name: The name of the local file, depends the choice of the user on the web page.</span>
+<span class="sd">    :type local_API_name: str</span>
+<span class="sd">    :returns: A dict with all the data from the API</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_online</span><span class="p">:</span>      <span class="c1"># if the user check the &quot;local&quot; box, this condition will be False</span>
+        <span class="n">APIfile</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;static/&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">local_API_name</span><span class="p">)))</span>   <span class="c1"># So the file used will be the local file that is input by the user.</span>
+    <span class="k">else</span><span class="p">:</span>                              <span class="c1"># if the condition &#39;is_online&#39; is true </span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="n">nb_points</span><span class="p">}</span>    <span class="c1">#this is a parameter, it modify the adress below to change the rows number. We found that code line on the documentation of the Requests module</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://data.rennesmetropole.fr/api/records/1.0/search/?dataset=etat-du-trafic-en-temps-reel&amp;q=&amp;facet=denomination&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span> <span class="c1">#this is the address of the online api, we add our parameters.</span>
+        <span class="n">APIfile</span> <span class="o">=</span> <span class="n">answer</span><span class="o">.</span><span class="n">json</span><span class="p">()</span> 
+        
+    <span class="k">return</span> <span class="n">APIfile</span> </div>
+    
+<span class="c1">#--------------------------------------------------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="get_API_data"><a class="viewcode-back" href="../Main_Program.html#Main_Program.get_API_data">[docs]</a><span class="k">def</span> <span class="nf">get_API_data</span><span class="p">(</span><span class="n">APIfile</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the data from the API file chosen</span>
+<span class="sd">    </span>
+<span class="sd">    :param APIfile: API dict with all its data</span>
+<span class="sd">    :type APIfile: dict</span>
+<span class="sd">    :returns: a list of coordinates and a list of str that represent the traffic status for each point.</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">traffic_Status</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span> <span class="p">(</span><span class="n">APIfile</span><span class="p">[</span><span class="s2">&quot;records&quot;</span><span class="p">])</span> <span class="p">:</span>  <span class="c1"># &#39;records&#39; is the key that contains all the points so we don&#39;t want to exceed it.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;geo_point_2d&#39;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">APIfile</span><span class="p">[</span><span class="s2">&quot;records&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="p">:</span> <span class="c1">#we found out that some points didn&#39;t have the key &#39;geo_point_2d&#39; so we wrote this condition to skip them</span>
+            <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="k">else</span> <span class="p">:</span> 
+            <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">APIfile</span><span class="p">[</span><span class="s2">&quot;records&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;fields&quot;</span><span class="p">][</span><span class="s1">&#39;geo_point_2d&#39;</span><span class="p">])</span>  <span class="c1"># [i] is the point number</span>
+            <span class="n">traffic_Status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">APIfile</span><span class="p">[</span><span class="s2">&quot;records&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;fields&quot;</span><span class="p">][</span><span class="s2">&quot;trafficstatus&quot;</span><span class="p">])</span>
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">coordinates</span><span class="p">,</span><span class="n">traffic_Status</span></div>
+
+<span class="c1">#--------------------------------------------------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="entry"><a class="viewcode-back" href="../Main_Program.html#Main_Program.entry">[docs]</a><span class="k">def</span> <span class="nf">entry</span> <span class="p">(</span><span class="n">is_online</span><span class="p">,</span> <span class="n">display_points</span><span class="p">,</span> <span class="n">nb_points</span><span class="p">,</span> <span class="n">local_API_name</span><span class="p">):</span>   
+    <span class="sd">&quot;&quot;&quot;The Main function that runs the other ones and our modules</span>
+<span class="sd">    </span>
+<span class="sd">    :param is_online: True (online API) or False (local API), depends on the choice of the user on the web page.</span>
+<span class="sd">    :type is_online: bool</span>
+<span class="sd">    :param display_points: True (display) or False (don&#39;t display), depends on the choice of the user on the web page.</span>
+<span class="sd">    :type display_points: bool</span>
+<span class="sd">    :param nb_points: Integer, depends on the choice of the user on the web page.</span>
+<span class="sd">    :type nb_points: int</span>
+<span class="sd">    :param local_API_name: The name of the local file, depends the choice of the user on the web page.</span>
+<span class="sd">    :type local_API_name: str</span>
+<span class="sd">    :returns: Nothing, directly create the html file for the map.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RennesMap</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">48.117266</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.6777926</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>  <span class="c1"># Creation of the base map and location of Rennes</span>
+       
+    <span class="n">areas_names_list</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;areas&#39;</span><span class="p">)</span>  <span class="c1">#Get the areas names in the &#39;areas&#39; folder     </span>
+    
+    <span class="n">area_all_data_list</span><span class="p">,</span> <span class="n">polygons_coordinates</span> <span class="o">=</span> <span class="n">get_area_data</span><span class="p">(</span><span class="n">areas_names_list</span><span class="p">)</span>  <span class="c1">#Get data for every area by using their names </span>
+       
+    <span class="n">APIfile</span> <span class="o">=</span> <span class="n">choose_API_file</span><span class="p">(</span><span class="n">is_online</span><span class="p">,</span> <span class="n">nb_points</span><span class="p">,</span> <span class="n">local_API_name</span><span class="p">)</span>   <span class="c1">#We choose an online or offline API and then get data from local or online file  </span>
+
+    <span class="n">point_coordinates</span> <span class="p">,</span> <span class="n">point_traffic_Status</span> <span class="o">=</span> <span class="n">get_API_data</span><span class="p">(</span><span class="n">APIfile</span><span class="p">)</span>  <span class="c1">#Get coordinates and traffic status for every point on the API file </span>
+       
+    <span class="n">dispatchModule</span><span class="o">.</span><span class="n">traffic_points_map</span><span class="p">(</span><span class="n">point_coordinates</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">RennesMap</span><span class="p">,</span> <span class="n">display_points</span><span class="p">)</span>  <span class="c1">#Choose to display the points from the API on the map </span>
+       
+    <span class="n">area_data_dictionary</span> <span class="o">=</span> <span class="n">dispatchModule</span><span class="o">.</span><span class="n">area_data_dict_creation</span><span class="p">(</span><span class="n">point_coordinates</span><span class="p">,</span> <span class="n">point_traffic_Status</span><span class="p">,</span> <span class="n">areas_names_list</span><span class="p">,</span> <span class="n">polygons_coordinates</span><span class="p">)</span> <span class="c1">#creation of the dictionary with all points in each area with their traffic status</span>
+       
+    <span class="n">area_colors_list</span> <span class="o">=</span> <span class="n">dispatchModule</span><span class="o">.</span><span class="n">calcul_area_color_and_grade</span><span class="p">(</span><span class="n">area_data_dictionary</span><span class="p">,</span><span class="n">areas_names_list</span><span class="p">)</span>    <span class="c1">#Create list with the final color of every area</span>
+   
+    <span class="n">colorModule</span><span class="o">.</span><span class="n">color_map_display</span><span class="p">(</span><span class="n">area_colors_list</span><span class="p">,</span> <span class="n">area_all_data_list</span><span class="p">,</span> <span class="n">areas_names_list</span><span class="p">,</span> <span class="n">RennesMap</span><span class="p">)</span>      <span class="c1">#Display these colors on the map with folium </span>
+   
+    <span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">()</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">RennesMap</span><span class="p">)</span>    <span class="c1">#The last 2 lines that add everythin to the ma and create the html map file</span>
+    <span class="n">RennesMap</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;templates/Rennes_Traffic_Map.html&quot;</span><span class="p">)</span>   <span class="c1">#We found these lines in the folium documentation</span></div>
+    
+
+<span class="c1">###########################</span>
+<span class="c1"># PROGRAM </span>
+<span class="c1">###########################</span>
+
+<span class="sd">&quot;&quot;&quot;As we want to use the server to run the program, </span>
+<span class="sd">we desactivated the Main_program so nothing is returned directly by it, </span>
+<span class="sd">but the 2 lines below can be re-activated if we don&#39;t want to use the server</span>
+<span class="sd">&quot;&quot;&quot;</span>
+   
+<span class="c1">#OnlineVersion = entry(True,True,5000,&#39;&#39;)  # 5000 is the number of points, we can change it</span>
+
+<span class="c1">#LocalVersion = entry(False,True,0,&#39;APIfile.json&#39;)  # &#39;APIfile.json&#39; is the default name of the local API file we have in our project folder</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, ISEN.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

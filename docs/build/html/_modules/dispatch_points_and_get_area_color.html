@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dispatch_points_and_get_area_color &mdash; ISEN A2 Project 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ISEN A2 Project
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">app</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ISEN A2 Project</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>dispatch_points_and_get_area_color</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dispatch_points_and_get_area_color</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Sat Jun 19 21:56:02 2021</span>
+
+<span class="sd">@author: leobu</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#######################################</span>
+<span class="c1">#module </span>
+<span class="c1">#######################################</span>
+<span class="sd">&quot;&quot;&quot;This module is the major part of the program,</span>
+<span class="sd">it&#39;s used to dispatch every point in its polygon and then determine a general color </span>
+<span class="sd">for every polygon</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">folium</span>
+
+
+
+<div class="viewcode-block" id="traffic_points_map"><a class="viewcode-back" href="../dispatch_points_and_get_area_color.html#dispatch_points_and_get_area_color.traffic_points_map">[docs]</a><span class="k">def</span> <span class="nf">traffic_points_map</span><span class="p">(</span><span class="n">coordList</span><span class="p">,</span><span class="n">color</span><span class="p">,</span> <span class="n">myMap</span><span class="p">,</span> <span class="n">display_points</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Allow the user to choose to display or not the data points on the map</span>
+<span class="sd">    </span>
+<span class="sd">    :param coordList: The list of (lon, lat) for all the data points.</span>
+<span class="sd">    :type coordList: list</span>
+<span class="sd">    :param color: The color we want for the points.</span>
+<span class="sd">    :type color: str</span>
+<span class="sd">    :param myMap: The folium map  </span>
+<span class="sd">    :type myMap: folium.folium.map</span>
+<span class="sd">    :param display_points: True if the user checked yes on the web page or False otherwise</span>
+<span class="sd">    :type display_points: bool</span>
+<span class="sd">    :returns: Nothing, just display (or not) the points directly on the map using folium</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">display_points</span> <span class="p">:</span>    <span class="c1"># if the entry is True, (means the user checked the &#39;yes&#39; case)</span>
+        <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">coordList</span><span class="p">:</span>    <span class="c1"># for every point, we display it on the map </span>
+            <span class="n">folium</span><span class="o">.</span><span class="n">CircleMarker</span><span class="p">(</span>    <span class="c1"># we found this code in the folium documentation and adapted it</span>
+                    <span class="n">location</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span>
+                    <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                    <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">fill_color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">myMap</span><span class="p">)</span></div>
+    
+<span class="c1">#--------------------------------------------------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="is_point_in_poly"><a class="viewcode-back" href="../dispatch_points_and_get_area_color.html#dispatch_points_and_get_area_color.is_point_in_poly">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_poly</span><span class="p">(</span><span class="n">coord_point</span><span class="p">,</span><span class="n">coord_polygon</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if a point is inside a polygon</span>
+<span class="sd">    </span>
+<span class="sd">    :param coord_point: A tuple with (lon, lat) values.</span>
+<span class="sd">    :type coord_point: tuple</span>
+<span class="sd">    :param coord_polygon: The list of (lon, lat) values of a polygon.</span>
+<span class="sd">    :type coord_polygon: list</span>
+<span class="sd">    :returns: True if the point is inside the polygon, False otherwise</span>
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">nombre_sommets</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coord_polygon</span><span class="p">)</span>  
+    <span class="n">inside</span> <span class="o">=</span> <span class="kc">False</span>  
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">p1x</span><span class="p">,</span><span class="n">p1y</span> <span class="o">=</span> <span class="n">coord_polygon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">nombre_sommets</span> <span class="p">:</span> 
+        <span class="n">p2x</span><span class="p">,</span><span class="n">p2y</span> <span class="o">=</span> <span class="n">coord_polygon</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">coord_point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">p1y</span><span class="p">,</span><span class="n">p2y</span><span class="p">)</span> <span class="ow">and</span> <span class="n">coord_point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">p1y</span><span class="p">,</span><span class="n">p2y</span><span class="p">)</span> <span class="p">:</span>  <span class="c1"># if Y(a) between Y(p1) and Y(p2) </span>
+                <span class="k">if</span> <span class="n">coord_point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="nb">max</span><span class="p">(</span><span class="n">p1x</span><span class="p">,</span><span class="n">p2x</span><span class="p">):</span>                             <span class="c1"># and if X(a) &lt; maximum (can be X(p1) or X(p2)) </span>
+                    <span class="k">if</span> <span class="n">p1y</span> <span class="o">!=</span> <span class="n">p2y</span> <span class="p">:</span>  <span class="c1">#div par 0</span>
+                         <span class="n">abscisseB</span> <span class="o">=</span> <span class="p">(</span><span class="n">p2x</span><span class="o">-</span><span class="n">p1x</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">p1y</span><span class="o">-</span><span class="n">coord_point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">p1y</span><span class="o">-</span><span class="n">p2y</span><span class="p">))</span><span class="o">-</span><span class="p">(</span><span class="n">coord_point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">p1x</span><span class="p">)</span>  <span class="c1">#this line results from the Thalès theorem, we explain it precisely in the report </span>
+                    <span class="k">if</span> <span class="n">p1x</span> <span class="o">==</span> <span class="n">p2x</span> <span class="ow">or</span> <span class="n">coord_point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">abscisseB</span><span class="p">:</span>        <span class="c1"># else if p1x p2x is a vertical line or if X(a) &lt; X(b)</span>
+                        <span class="n">counter</span> <span class="o">+=</span><span class="mi">1</span>     <span class="c1">#means the line that start from the point croses a segment of the polygon, so we add 1 to the counter</span>
+        <span class="n">p1x</span><span class="p">,</span><span class="n">p1y</span> <span class="o">=</span> <span class="n">p2x</span><span class="p">,</span><span class="n">p2y</span>
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">counter</span> <span class="o">%</span><span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">:</span> <span class="c1">#If the counter is odd, then the point is inside the polygon</span>
+        <span class="n">inside</span> <span class="o">=</span> <span class="kc">True</span>
+    
+    <span class="k">return</span> <span class="n">inside</span>    </div>
+
+<span class="c1">#--------------------------------------------------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="area_data_dict_creation"><a class="viewcode-back" href="../dispatch_points_and_get_area_color.html#dispatch_points_and_get_area_color.area_data_dict_creation">[docs]</a><span class="k">def</span> <span class="nf">area_data_dict_creation</span><span class="p">(</span><span class="n">point_coordsList</span><span class="p">,</span> <span class="n">traffic_Status</span><span class="p">,</span> <span class="n">areas_names</span><span class="p">,</span> <span class="n">area_coordinates</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Creates a dictionary to gather all the data</span>
+<span class="sd">    </span>
+<span class="sd">    :param point_coordsList: The list of (lon, lat) for all the data points.</span>
+<span class="sd">    :type point_coordsList: list</span>
+<span class="sd">    :param traffic_Status: The list of (str) traffic status values for each point.</span>
+<span class="sd">    :type traffic_Status: list</span>
+<span class="sd">    :param areas_names: The list of (str) names for each area.</span>
+<span class="sd">    :type areas_names: list</span>
+<span class="sd">    :param area_coordinates: The list of (lon, lat) values for every area.</span>
+<span class="sd">    :type area_coordinates: list</span>
+<span class="sd">    :return: Dictionary with every name as keys and for each name a second dictionary with every traffic status and the points associated.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">area_data_dict</span> <span class="o">=</span> <span class="p">{}</span>        
+   
+    <span class="k">for</span> <span class="n">area_nb</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">areas_names</span><span class="p">))</span> <span class="p">:</span>  <span class="c1">#We go through every area</span>
+        <span class="n">freeflowList</span> <span class="o">=</span> <span class="p">[]</span>      <span class="c1">#We set every list and the traffic dictionary to empty</span>
+        <span class="n">heavyList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">congestedList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">impossibleList</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">total_coord</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">TrafficStatusDict</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">point_coordsList</span><span class="p">))</span> <span class="p">:</span>  <span class="c1">#For each area, we review each point from the points coordinates list</span>
+    
+            <span class="k">if</span> <span class="n">is_point_in_poly</span><span class="p">(</span><span class="n">point_coordsList</span><span class="p">[</span><span class="n">index</span><span class="p">],</span><span class="n">area_coordinates</span><span class="p">[</span><span class="n">area_nb</span><span class="p">])</span> <span class="p">:</span>  <span class="c1"># we use ou function is_point_in_poly to determine if our current point is in our current area</span>
+                                
+                <span class="k">if</span> <span class="n">traffic_Status</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;freeFlow&quot;</span> <span class="p">:</span>      <span class="c1"># If for the current index, the traffic_status value is &#39;freeFlow&#39; :  </span>
+                    <span class="n">freeflowList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point_coordsList</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>  <span class="c1"># we add the current [X,Y] coordinates to the freeflow list.</span>
+                
+                <span class="k">if</span> <span class="n">traffic_Status</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;heavy&quot;</span> <span class="p">:</span>         <span class="c1">#Same for each status, except unknown that we chose to ignore</span>
+                    <span class="n">heavyList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point_coordsList</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+    
+                <span class="k">if</span> <span class="n">traffic_Status</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;congested&quot;</span> <span class="p">:</span>
+                    <span class="n">congestedList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point_coordsList</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+    
+                <span class="k">if</span> <span class="n">traffic_Status</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;impossible&quot;</span> <span class="p">:</span>
+                    <span class="n">impossibleList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point_coordsList</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+                
+                <span class="n">total_coord</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">point_coordsList</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>    <span class="c1">#Then a final list is created with all the points coord for the current polygon</span>
+            <span class="k">else</span> <span class="p">:</span>     <span class="c1">#If the function returns False, we do nothing and pass to the next point</span>
+                <span class="k">pass</span>
+        
+        <span class="n">TrafficStatusDict</span><span class="p">[</span><span class="s2">&quot;freeFlow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">freeflowList</span>  <span class="c1">#We add every liste to its key in our 2nd dictionary</span>
+        <span class="n">TrafficStatusDict</span><span class="p">[</span><span class="s2">&quot;heavy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">heavyList</span>
+        <span class="n">TrafficStatusDict</span><span class="p">[</span><span class="s2">&quot;congested&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">congestedList</span>
+        <span class="n">TrafficStatusDict</span><span class="p">[</span><span class="s2">&quot;impossible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">impossibleList</span>
+        <span class="n">TrafficStatusDict</span><span class="p">[</span><span class="s2">&quot;total_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_coord</span>
+        
+        
+        <span class="n">area_data_dict</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">areas_names</span><span class="p">[</span><span class="n">area_nb</span><span class="p">])]</span> <span class="o">=</span>  <span class="n">TrafficStatusDict</span>  <span class="c1">#We add our dictionary to the current area key in our main dict and restart the process with the next area</span>
+ 
+        
+    <span class="k">return</span> <span class="n">area_data_dict</span>   </div>
+
+<span class="c1">#--------------------------------------------------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="calcul_area_color_and_grade"><a class="viewcode-back" href="../dispatch_points_and_get_area_color.html#dispatch_points_and_get_area_color.calcul_area_color_and_grade">[docs]</a><span class="k">def</span> <span class="nf">calcul_area_color_and_grade</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span><span class="n">areas_names</span><span class="p">)</span> <span class="p">:</span> 
+    <span class="sd">&quot;&quot;&quot;Calcul the color of an area based on all the points in it</span>
+<span class="sd">    </span>
+<span class="sd">    :param dictionary: The dictionary generated by the function &#39;area_data_dict_creation&#39;.</span>
+<span class="sd">    :type dictionary: dict</span>
+<span class="sd">    :param areas_names: The list of (str) names for each area.</span>
+<span class="sd">    :type areas_names: list</span>
+<span class="sd">    :returns: a list of colors, in the order of the areas names list.</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">area_colors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">area_nb</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">area_nb</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">areas_names</span><span class="p">)</span> <span class="p">:</span>   
+        
+        <span class="n">overall_size</span> <span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dictionary</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">areas_names</span><span class="p">[</span><span class="n">area_nb</span><span class="p">])][</span><span class="s2">&quot;total_points&quot;</span><span class="p">])</span>            
+        <span class="n">grade_freeflow</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dictionary</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">areas_names</span><span class="p">[</span><span class="n">area_nb</span><span class="p">])][</span><span class="s2">&quot;freeFlow&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">20</span>     <span class="c1">#we multiply the number of points in each category by its grade            </span>
+        <span class="n">grade_heavy</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dictionary</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">areas_names</span><span class="p">[</span><span class="n">area_nb</span><span class="p">])][</span><span class="s2">&quot;heavy&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">12</span>              
+        <span class="n">grade_congested</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dictionary</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">areas_names</span><span class="p">[</span><span class="n">area_nb</span><span class="p">])][</span><span class="s2">&quot;congested&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">8</span>          
+        <span class="n">grade_impossible</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dictionary</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">areas_names</span><span class="p">[</span><span class="n">area_nb</span><span class="p">])][</span><span class="s2">&quot;impossible&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">0</span>
+        
+        <span class="k">if</span> <span class="n">overall_size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>      <span class="c1">#if there is no point in a polygon, overall_size == 0 and we can&#39;t divide by 0</span>
+            <span class="n">average_grade</span> <span class="o">=</span>  <span class="p">(</span><span class="n">grade_freeflow</span> <span class="o">+</span> <span class="n">grade_heavy</span> <span class="o">+</span> <span class="n">grade_congested</span> <span class="o">+</span> <span class="n">grade_impossible</span><span class="p">)</span> <span class="o">/</span> <span class="n">overall_size</span>  <span class="c1"># We calcul the average</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">average_grade</span> <span class="o">=</span> <span class="mi">30</span> <span class="c1"># renders white if there is no data in an area</span>
+            
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">average_grade</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="p">:</span>         <span class="c1"># we append the color of the current area depending on the average grade </span>
+            <span class="n">area_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#000000&quot;</span><span class="p">)</span>   <span class="c1">#HTML color code     </span>
+        <span class="k">elif</span> <span class="mi">5</span> <span class="o">&lt;=</span> <span class="n">average_grade</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="p">:</span>
+            <span class="n">area_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#f91f05&quot;</span><span class="p">)</span>     
+        <span class="k">elif</span> <span class="mi">10</span> <span class="o">&lt;=</span> <span class="n">average_grade</span> <span class="o">&lt;</span> <span class="mi">15</span><span class="p">:</span>
+            <span class="n">area_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#f9b605&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="mi">15</span> <span class="o">&lt;=</span> <span class="n">average_grade</span> <span class="o">&lt;=</span> <span class="mi">20</span> <span class="p">:</span>
+            <span class="n">area_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#1bd33c&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">average_grade</span> <span class="o">==</span> <span class="mi">30</span> <span class="p">:</span> 
+            <span class="n">area_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;#FFFFFF&quot;</span><span class="p">)</span>                  
+        <span class="n">area_nb</span><span class="o">+=</span><span class="mi">1</span>
+        
+    <span class="k">return</span> <span class="n">area_colors</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, ISEN.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
